@@ -1,0 +1,62 @@
+1.  시드 1, 2 및 3을 가지고 실행하고 프로세스에 의해 생성된 각 가상 주소가 범위 내에 있는지 계산하라. 
+    바운드 안에 있다면 주소 변환을 수행하라.
+
+A.  seed1: 
+    Base-and-Bounds register information:
+
+    Base   : 0x0000363c (decimal 13884)
+    Limit  : 290
+
+    Virtual Address Trace
+    VA  0: 0x0000030e (decimal:  782) --> SEGMENTATION VIOLATION
+    VA  1: 0x00000105 (decimal:  261) --> VALID: 0x00003741 (decmial: 14145)
+    VA  2: 0x000001fb (decimal:  507) --> SEGMENTATION VIOLATION
+    VA  3: 0x000001cc (decimal:  460) --> SEGMENTATION VIOLATION
+    VA  4: 0x0000029b (decimal:  667) --> SEGMENTATION VIOLATION
+
+    seed2:
+    Base-and-Bounds register information:
+
+    Base   : 0x00003ca9 (decimal 15529)
+    Limit  : 500
+
+    Virtual Address Trace
+    VA  0: 0x00000039 (decimal:   57) --> VALID: 0x00003ce2 (decimal: 15586)
+    VA  1: 0x00000056 (decimal:   86) --> VALID: 0x00003cff (decimal: 15615)
+    VA  2: 0x00000357 (decimal:  855) --> SEGMENTATION VIOLATION
+    VA  3: 0x000002f1 (decimal:  753) --> SEGMENTATION VIOLATION
+    VA  4: 0x000002ad (decimal:  685) --> SEGMENTATION VIOLATION
+
+    seed3:
+    Base-and-Bounds register information:
+
+    Base   : 0x000022d4 (decimal 8916)
+    Limit  : 316
+
+    Virtual Address Trace
+    VA  0: 0x0000017a (decimal:  378) --> SEGMENTATION VIOLATION
+    VA  1: 0x0000026a (decimal:  618) --> SEGMENTATION VIOLATION
+    VA  2: 0x00000280 (decimal:  640) --> SEGMENTATION VIOLATION
+    VA  3: 0x00000043 (decimal:   67) --> VALID: 0x00002317 (decimal: 8983)
+    VA  4: 0x0000000d (decimal:   13) --> VALID: 0x000022e1 (decmial: 8929)
+
+2.  다음과 같은 플래그를 주고 실행하라: -s 0 -n 10.
+    생성된 모든 가상 주소가 범위 안에 있는 것을 보장하기 위해서는 -l을 어떤 값으로 설정해야 하는가?
+
+A.  930
+
+3.  다음과 같은 플래그를 주고 실행하라: -s 1 -n 10 -l 100.
+    주소공간전체가 여전히 물리 메모리에 들어가려면 설정할 수 있는 베이스 레지스터의 최댓값은 얼마 인가?
+
+A.  16K - 100 = 16284
+
+4.  더 큰 주소 공간(-a)과 물리 메모리(-p)를 설정하여 위 문제와 동일하게 실행시켜 보아라.
+
+A.  주소 공간을 32M로 증가시키고 물리 메모리 크기 또한 1G로 증가시키면 주소 공간의 크기가 바운드 레지스터의 값에 비해
+    매우 크기 때문에 높은 확률로 SEGMENTATION VIOLATION이 발생한다.
+
+5.  바운드 레지스터의 값이 변함에 따라 임의로 생성된 가상 주소 중 유효한 주소의 비율은 얼마인가? 
+    다른 랜덤 시드를 가지고 실행한 결과를 그래프로 나타내시오. 값의 범위는 0부터 주소 공간의 최대 크기로 한다.
+
+A.  바운드 레지스터 값이 커지면 유효한 주소의 비율이 증가한다. 바운드 레지스터 값이 주소 공간의 최대 크기에 가까워질 수록
+    유효한 주소의 비율은 1에 가까워진다.
